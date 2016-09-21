@@ -35,6 +35,7 @@ public class TeleportingGate extends PluginBase implements Listener
 		gateLocations = getConfig().getMapList(LOCATIONSCONFIG);
 	}
 	
+	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		
 	}
