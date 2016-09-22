@@ -33,6 +33,10 @@ public class TeleportingGate extends PluginBase implements Listener
 	public void loadConfig() {
 		reloadConfig();
 		gateLocations = getConfig().getMapList(LOCATIONSCONFIG);
+		if(gateLocations.isEmpty()) {
+			getLogger().info("gateLocations is empty. Generating Config file.");
+			gateLocations.add(new HashMap<Integer, Integer>());
+		}
 	}
 	
 	@EventHandler
