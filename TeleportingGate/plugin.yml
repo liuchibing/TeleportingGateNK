@@ -6,19 +6,19 @@ api: ["1.0.0"]
 load: POSTWORLD
 
 author: liuchibing
-description: ä¼ é€é—¨æ’ä»¶ï¼Œç«™åœ¨è®¾å®šå¥½çš„ä½ç½®å°±å¯ä»¥è‡ªåŠ¨ä¼ é€
+description: ´«ËÍÃÅ²å¼ş£¬Õ¾ÔÚÉè¶¨ºÃµÄÎ»ÖÃ¾Í¿ÉÒÔ×Ô¶¯´«ËÍ
 website: liuchibing.github.io
 
 permissions:
   teleportinggate.setgate:
-    description: è®¾ç½®ä¼ é€é—¨çš„æƒé™
+    description: ÉèÖÃ´«ËÍÃÅµÄÈ¨ÏŞ
     default: op
   teleportinggate.entergate:
-    description: ä½¿ç”¨ä¼ é€é—¨çš„æƒé™
+    description: Ê¹ÓÃ´«ËÍÃÅµÄÈ¨ÏŞ
     default: true
-	
+
 commands:
   tpgate:
-    description: æŸ¥çœ‹å·²è®¾ç½®çš„ä¼ é€é—¨ã€è®¾ç½®æ–°ä¼ é€é—¨æˆ–åˆ é™¤å·²æœ‰ä¼ é€é—¨
+    description: ²é¿´ÒÑÉèÖÃµÄ´«ËÍÃÅ¡¢ÉèÖÃĞÂ´«ËÍÃÅ»òÉ¾³ıÒÑÓĞ´«ËÍÃÅ
     usage: "/tpgate [set/del position]"
     permission: teleportinggate.setgate
