@@ -1,0 +1,9 @@
+gateLocations:
+    hello:
+        fromX: '0'
+        fromY: '0'
+        fromZ: '0'
+        toX: '0'
+        toY: '0'
+        toZ: '0'
+        name: 'Example Position'

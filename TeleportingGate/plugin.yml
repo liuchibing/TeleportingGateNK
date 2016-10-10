@@ -6,19 +6,16 @@ api: ["1.0.0"]
 load: POSTWORLD
 
 author: liuchibing
-description: 传送门插件，站在设定好的位置就可以自动传送
+description: Teleporting Gate Plugin for Nukkit
 website: liuchibing.github.io
 
-permissions:
-  teleportinggate.setgate:
-    description: 设置传送门的权限
-    default: op
-  teleportinggate.entergate:
-    description: 使用传送门的权限
+permissions: 
+  teleportinggate.use:
+    description: "use gate"
     default: true
 
 commands:
   tpgate:
-    description: 查看已设置的传送门、设置新传送门或删除已有传送门
-    usage: "/tpgate [set/del position]"
-    permission: teleportinggate.setgate
+    description: "list the gates, set a gate or delete a gate"
+    usage: "/tpgate [set name x y z] [del name]"
+    permission: teleportinggate.use
