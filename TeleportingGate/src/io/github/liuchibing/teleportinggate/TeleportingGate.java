@@ -1,11 +1,8 @@
 package io.github.liuchibing.teleportinggate;
 
-import cn.nukkit.*;
 import cn.nukkit.plugin.*;
 import cn.nukkit.event.*;
 import cn.nukkit.event.player.*;
-import cn.nukkit.level.*;
-import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.*;
 import cn.nukkit.command.*;
 
@@ -35,7 +32,7 @@ public class TeleportingGate extends PluginBase implements Listener
         getLogger().info("Hello Nukkit,I've disabled!");
     }
 
-	public void loadConfig() {
+	private void loadConfig() {
 		reloadConfig();
 		config = getConfig();
 		gateLocations = (Map<String, Map>)config.get(LOCATIONSCONFIG);
@@ -45,7 +42,7 @@ public class TeleportingGate extends PluginBase implements Listener
 		}
 	}
 	
-	public void unserializeGate(Map item) {
+	private void unserializeGate(Map item) {
 		Gate g = new Gate();
 		g.fromX = Integer.parseInt((String)item.get("fromX"));
 		g.fromY = Integer.parseInt((String)item.get("fromY"));
@@ -58,7 +55,7 @@ public class TeleportingGate extends PluginBase implements Listener
 	}
 
 
-	public void serializeGate(Gate gate) { //将一个gate存到config中
+	private void serializeGate(Gate gate) { //将一个gate存到config中
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("fromX", String.valueOf(gate.fromX));
 		m.put("fromY", String.valueOf(gate.fromY));
@@ -69,7 +66,7 @@ public class TeleportingGate extends PluginBase implements Listener
 		m.put("name", gate.name);
 		gateLocations.put(gate.name, m);
 		config.save();
-		getLogger().info("config saved: "+ m.get("name"));
+		//getLogger().info("config saved: "+ m.get("name"));
 	}
 	
 	@EventHandler
@@ -84,10 +81,10 @@ public class TeleportingGate extends PluginBase implements Listener
         boolean flag = true;
 		if(args.length == 0) {
             for (Gate item : gates) {
-                getLogger().info(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ);
+                getLogger().info(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ + " to: " + item.toX + "," + item.toY + "," + item.toZ);
             }
         }
-        else if(args[0] == "set") { //format: /tpgate set name fromX fromY fromZ toX toY toZ
+        else if(args[0].equals("set")) { //format: /tpgate set name fromX fromY fromZ toX toY toZ
             try {
                 Gate g = new Gate();
                 g.name = args[1];
@@ -99,21 +96,28 @@ public class TeleportingGate extends PluginBase implements Listener
                 g.toZ = Integer.parseInt(args[7]);
                 gates.add(g);
                 serializeGate(g);
+                getLogger().info("已创建传送门: " + args[1]);
             }
             catch(Exception e) {
                 getLogger().error("命令格式错误！");
                 flag = false;
             }
         }
-        else if(args[0] == "del") { //format: /tpgate del name
+        else if(args[0].equals("del")) { //format: /tpgate del name
             try {
                 if(gateLocations.containsKey(args[1])) {
+                    Gate tempGate = null;
                     for(Gate item: gates) {
-                        if(item.name == args[1]) {
-                            gates.remove(item);
+                        if(item.name.equals(args[1])) {
+                            tempGate = item;
                         }
                     }
+                    if(tempGate != null) {
+                        gates.remove(tempGate);
+                    }
                     gateLocations.remove(args[1]);
+                    config.save();
+                    getLogger().info("已删除传送门:" + args[1]);
                 }
                 else {
                     getLogger().error("要删除的传送门不存在！");
