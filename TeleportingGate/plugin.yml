@@ -17,5 +17,5 @@ permissions:
 commands:
   tpgate:
     description: "list the gates, set a gate or delete a gate"
-    usage: "/tpgate [set name x y z] [del name]"
+    usage: "/tpgate [set name fromX fromY fromZ toX toY toZ] [del name]"
     permission: teleportinggate.use

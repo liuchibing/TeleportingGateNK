@@ -26,7 +26,7 @@ public class TeleportingGate extends PluginBase implements Listener
 	@Override
     public void onEnable() {
 		saveDefaultConfig();
-        loadConfig();
+        loadConfig();//加载Config并将Gate读取为ArrayList
         getServer().getPluginManager().registerEvents(this, this);
     }
 
@@ -56,8 +56,9 @@ public class TeleportingGate extends PluginBase implements Listener
 		g.name = (String)item.get("name");
 		gates.add(g);
 	}
-	
-	public void serializeGate(Gate gate) {
+
+
+	public void serializeGate(Gate gate) { //将一个gate存到config中
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("fromX", String.valueOf(gate.fromX));
 		m.put("fromY", String.valueOf(gate.fromY));
@@ -80,12 +81,55 @@ public class TeleportingGate extends PluginBase implements Listener
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        boolean flag = true;
 		if(args.length == 0) {
-			for(Gate item: gates) {
-				getLogger().info(item.name + " from: " + item.fromX + "," + item.fromY + "," + item.fromZ);
-			}
-		}
+            for (Gate item : gates) {
+                getLogger().info(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ);
+            }
+        }
+        else if(args[0] == "set") { //format: /tpgate set name fromX fromY fromZ toX toY toZ
+            try {
+                Gate g = new Gate();
+                g.name = args[1];
+                g.fromX = Integer.parseInt(args[2]);
+                g.fromY = Integer.parseInt(args[3]);
+                g.fromZ = Integer.parseInt(args[4]);
+                g.toX = Integer.parseInt(args[5]);
+                g.toY = Integer.parseInt(args[6]);
+                g.toZ = Integer.parseInt(args[7]);
+                gates.add(g);
+                serializeGate(g);
+            }
+            catch(Exception e) {
+                getLogger().error("命令格式错误！");
+                flag = false;
+            }
+        }
+        else if(args[0] == "del") { //format: /tpgate del name
+            try {
+                if(gateLocations.containsKey(args[1])) {
+                    for(Gate item: gates) {
+                        if(item.name == args[1]) {
+                            gates.remove(item);
+                        }
+                    }
+                    gateLocations.remove(args[1]);
+                }
+                else {
+                    getLogger().error("要删除的传送门不存在！");
+                    flag = false;
+                }
+            }
+            catch(Exception e) {
+                getLogger().error("命令格式错误！");
+                flag = false;
+            }
+        }
+        else {
+            getLogger().error("命令格式错误！");
+            flag = false;
+        }
 		
-		return true;
+		return flag;
 	}
 }
