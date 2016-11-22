@@ -3,7 +3,7 @@ src=src/io/github/liuchibing/teleportinggate/Gate.java  src/io/github/liuchibing
 class=out/io/github/liuchibing/teleportinggate/Gate.class out/io/github/liuchibing/teleportinggate/TeleportingGate.class
 
 ~/nukkit/plugins/TeleportingGate.jar: $(class)
-	cp -r resources out/resources;
+	cp resources/config.yml out/config.yml
 	cp plugin.yml out/plugin.yml;
 	jar cvf ~/nukkit/plugins/TeleportingGate.jar -C out/ .
 
