@@ -5,6 +5,7 @@ import cn.nukkit.event.*;
 import cn.nukkit.event.player.*;
 import cn.nukkit.utils.*;
 import cn.nukkit.command.*;
+import cn.nukkit.math.*;
 
 import java.util.*;
 
@@ -71,20 +72,31 @@ public class TeleportingGate extends PluginBase implements Listener
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		getLogger().info("event catched!");
-		getLogger().info(event.getFrom().toString());
-		getLogger().info(event.getTo().toString());
+		for(Gate item: gates) {
+            if(((int) event.getTo().x)==item.fromX) {
+                if(((int) event.getTo().y)==item.fromY) {
+                    if(((int) event.getTo().z)==item.fromZ) {
+                        event.getPlayer().teleport(new Vector3(item.fromX, item.fromY, item.fromZ));
+                    }
+                }
+            }
+        }
 	}
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean flag = true;
+        boolean canEdit = sender.isOp();
 		if(args.length == 0) {
             for (Gate item : gates) {
                 getLogger().info(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ + " to: " + item.toX + "," + item.toY + "," + item.toZ);
             }
         }
         else if(args[0].equals("set")) { //format: /tpgate set name fromX fromY fromZ toX toY toZ
+            if(!canEdit) {
+                getLogger().error("权限不足：只有OP有权修改传送门。");
+                return false;
+            }
             try {
                 Gate g = new Gate();
                 g.name = args[1];
@@ -104,6 +116,10 @@ public class TeleportingGate extends PluginBase implements Listener
             }
         }
         else if(args[0].equals("del")) { //format: /tpgate del name
+            if(!canEdit) {
+                getLogger().error("权限不足：只有OP有权修改传送门。");
+                return false;
+            }
             try {
                 if(gateLocations.containsKey(args[1])) {
                     Gate tempGate = null;
