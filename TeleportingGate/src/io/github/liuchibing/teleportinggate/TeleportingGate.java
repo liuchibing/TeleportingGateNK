@@ -90,11 +90,13 @@ public class TeleportingGate extends PluginBase implements Listener
 		if(args.length == 0) {
             for (Gate item : gates) {
                 getLogger().info(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ + " to: " + item.toX + "," + item.toY + "," + item.toZ);
+                sender.sendMessage(item.name + ": from: " + item.fromX + "," + item.fromY + "," + item.fromZ + " to: " + item.toX + "," + item.toY + "," + item.toZ);
             }
         }
         else if(args[0].equals("set")) { //format: /tpgate set name fromX fromY fromZ toX toY toZ
             if(!canEdit) {
-                getLogger().error("权限不足：只有OP有权修改传送门。");
+                //getLogger().error("权限不足：只有OP有权修改传送门。");
+                sender.sendMessage("权限不足：只有OP有权修改传送门。");
                 return false;
             }
             try {
@@ -108,16 +110,19 @@ public class TeleportingGate extends PluginBase implements Listener
                 g.toZ = Integer.parseInt(args[7]);
                 gates.add(g);
                 serializeGate(g);
-                getLogger().info("已创建传送门: " + args[1]);
+                sender.sendMessage("已创建传送门: " + args[1]);
+                //getLogger().info("已创建传送门: " + args[1]);
             }
             catch(Exception e) {
-                getLogger().error("命令格式错误！");
+                sender.sendMessage("命令格式错误！");
+                //getLogger().error("命令格式错误！");
                 flag = false;
             }
         }
         else if(args[0].equals("del")) { //format: /tpgate del name
             if(!canEdit) {
-                getLogger().error("权限不足：只有OP有权修改传送门。");
+                sender.sendMessage("权限不足：只有OP有权修改传送门。");
+                //getLogger().error("权限不足：只有OP有权修改传送门。");
                 return false;
             }
             try {
@@ -133,20 +138,24 @@ public class TeleportingGate extends PluginBase implements Listener
                     }
                     gateLocations.remove(args[1]);
                     config.save();
-                    getLogger().info("已删除传送门:" + args[1]);
+                    sender.sendMessage("已删除传送门:" + args[1]);
+                    //getLogger().info("已删除传送门:" + args[1]);
                 }
                 else {
-                    getLogger().error("要删除的传送门不存在！");
+                    sender.sendMessage("要删除的传送门不存在！");
+                    //getLogger().error("要删除的传送门不存在！");
                     flag = false;
                 }
             }
             catch(Exception e) {
-                getLogger().error("命令格式错误！");
+                sender.sendMessage("命令格式错误！");
+                //getLogger().error("命令格式错误！");
                 flag = false;
             }
         }
         else {
-            getLogger().error("命令格式错误！");
+            sender.sendMessage("命令格式错误！");
+            //getLogger().error("命令格式错误！");
             flag = false;
         }
 		
